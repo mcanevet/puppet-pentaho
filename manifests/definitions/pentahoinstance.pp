@@ -44,7 +44,23 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       mode    => 755,
       require => Package["pentaho-biserver"],
       }
-
+    
+      file { ["/srv/tomcat/pentaho_biserver/conf/",
+        "/srv/tomcat/pentaho_biserver/conf/Catalina/",
+        "/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/"]:
+            ensure  => "directory",
+            mode    => 755,
+            require => Package["pentaho-biserver"],
+            }
+    #pentaho/META-INF/context.xml
+      file { '/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/pentaho.xml':
+        ensure  => present,
+        content => template('pentaho/pentaho_context.xml.erb'),
+        mode    => 755,
+        require => [Package["pentaho-biserver"], File["/srv/tomcat/pentaho_biserver/conf/",
+        "/srv/tomcat/pentaho_biserver/conf/Catalina/",
+        "/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/"]],
+        }
 #pentaho/WEB-INF/web.xml
     file { '/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/web.xml':
     ensure  => present,
@@ -69,5 +85,11 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       require => Package["pentaho-biserver"],
     }
 
+  file { '/srv/tomcat/pentaho_biserver/lib/mysql-connector-java-5.1.17.jar':
+      ensure  => present,
+      source => "puppet:///modules/pentaho/mysql-connector-java-5.1.17.jar",
+      mode    => 755,
+        require => Package["pentaho-biserver"],
+      }
 
 }
