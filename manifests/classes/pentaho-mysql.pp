@@ -62,20 +62,20 @@ mysql::rights{"sampledata rights":
   require => Mysql::Database["sampledata"],
 }
 
-file { "/tmp/sampledata.sql":
+file { "/tmp/sampledata_mysql.sql":
     mode => 440,
     owner => root,
     group => root,
-    source => "puppet:///modules/pentaho/sampledata.sql",
+    source => "puppet:///modules/pentaho/sampledata_mysql.sql",
     require => Mysql::Rights["sampledata rights"],
     notify => Exec["importsampledata"],
 }
 
 exec { "importsampledata":
         cwd => "/tmp",
-        command => "mysql -uroot sampledata < /tmp/sampledata.sql",
+        command => "mysql -uroot sampledata < /tmp/sampledata_mysql.sql",
         refreshonly => true,
-        require => File["/tmp/sampledata.sql"],
+        require => File["/tmp/sampledata_mysql.sql"],
 }
 
 
