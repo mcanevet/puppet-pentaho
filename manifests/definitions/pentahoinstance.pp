@@ -98,4 +98,11 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       mode    => 755,
         require => Package["pentaho-biserver"],
       }
+      
+  file { '/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/classes/log4j.xml':
+    ensure  => present,
+    content => template('pentaho/pentaho_log4j.xml.erb'),
+    mode    => 755,
+    require => Package["pentaho-biserver"],
+    }
 }

@@ -2,6 +2,8 @@ CREATE DATABASE IF NOT EXISTS `hibernate` DEFAULT CHARACTER SET latin1;
 
 USE hibernate;
 
+ALTER DATABASE hibernate DEFAULT CHARACTER SET latin1;
+
 GRANT ALL ON hibernate.* TO 'hibuser'@'localhost' identified by 'password'; 
 
 DROP TABLE IF EXISTS DATASOURCE;

@@ -84,12 +84,12 @@
 		<param-value>com.tonbeller.wcf.controller.RequestContextFactoryImpl</param-value>
 	</context-param>
 
-    <!-- [BEGIN HSQLDB DATABASES] -->
+    <!-- [BEGIN HSQLDB DATABASES] 
     <context-param>
         <param-name>hsqldb-databases</param-name>
         <param-value>sampledata@../../data/hsqldb/sampledata,hibernate@../../data/hsqldb/hibernate,quartz@../../data/hsqldb/quartz</param-value>
     </context-param>
-    <!-- [END HSQLDB DATABASES] -->
+     [END HSQLDB DATABASES] -->
     
 	<!-- insert additional context-params -->
 
@@ -211,11 +211,11 @@
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
 
-    <!-- [BEGIN HSQLDB STARTER] -->
+    <!-- [BEGIN HSQLDB STARTER]
     <listener>
         <listener-class>org.pentaho.platform.web.http.context.HsqldbStartupListener</listener-class>
     </listener>
-    <!-- [END HSQLDB STARTER] -->
+     [END HSQLDB STARTER] -->
      
 	<!-- JPivot resources initializer -->
 	<listener>
