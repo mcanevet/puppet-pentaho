@@ -1,5 +1,5 @@
 #
-# saiku-apt.pp
+# pentaho-apt.pp
 # 
 # Copyright (c) 2011, OSBI Ltd. All rights reserved.
 #
@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301  USA
 #
-class saiku::apt {
+class pentaho::apt {
   include apt
   $apt_key = extlookup('alabs_repo_key', '')
   $apt_content = extlookup('alabs_repo_content', '')
