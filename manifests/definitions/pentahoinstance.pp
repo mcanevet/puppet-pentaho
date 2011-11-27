@@ -92,4 +92,10 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
         require => Package["pentaho-biserver"],
       }
 
+      file { '/opt/pentaho-solutions/system/hibernate/hibernate-settings.xml':
+      ensure  => present,
+      content => template('pentaho/solution_hibernate-settings.xml.erb'),
+      mode    => 755,
+        require => Package["pentaho-biserver"],
+      }
 }
