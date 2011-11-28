@@ -38,6 +38,12 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     require => Package["pentaho-biserver"],
   }
 
+    file { '/opt/administration-console/resource/config/console.xml':
+      ensure  => present,
+      content => template('pentaho/admin_console.xml.erb'),
+      mode    => 755,
+      require => Package["pentaho-biserver"],
+      }
       
   #pentaho/META-INF/context.xml
     file { '/srv/tomcat/pentaho_biserver/webapps/pentaho/META-INF/context.xml':
