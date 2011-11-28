@@ -1,18 +1,5 @@
 class pentaho::mysql {
-
-  $mysql_data_dir = "/mnt/mysql"
   
-  file { "/mnt/mysql":
-  ensure => "directory",
-    owner => "mysql",
-    group => "mysql",
-  }
-  
-  
-  class { "mysql::server":
-    require => File["/mnt/mysql"],
-  }
-
 mysql::database{"hibernate":
   ensure   => present
 }
