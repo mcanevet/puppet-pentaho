@@ -24,7 +24,7 @@ file { "/srv/pentahodata/create_repository_mysql.sql":
 
 exec { "importhibernate":
         cwd => "/tmp",
-        command => "mysql -uroot hibernate < /tmp/create_repository_mysql.sql",
+        command => "mysql -uroot hibernate < /srv/pentahodata/create_repository_mysql.sql",
         refreshonly => true,
         require => File["/tmp/create_repository_mysql.sql"],
 }
@@ -41,7 +41,7 @@ file { "/srv/pentahodata/create_sample_datasource_mysql.sql":
 
 exec { "importhibernate2":
         cwd => "/tmp",
-        command => "mysql -uroot hibernate < /tmp/create_sample_datasource_mysql.sql",
+        command => "mysql -uroot hibernate < /srv/pentahodata/create_sample_datasource_mysql.sql",
         refreshonly => true,
         require => File["/tmp/create_sample_datasource_mysql.sql"],
 }
@@ -71,7 +71,7 @@ file { "/srv/pentahodata/sampledata_mysql.sql":
 
 exec { "importsampledata":
         cwd => "/tmp",
-        command => "mysql -uroot sampledata < /tmp/sampledata_mysql.sql",
+        command => "mysql -uroot sampledata < /srv/pentahodata/sampledata_mysql.sql",
         refreshonly => true,
         require => File["/tmp/sampledata_mysql.sql"],
 }
@@ -101,7 +101,7 @@ file { "/srv/pentahodata/create_quartz_mysql.sql":
 
 exec { "importquartz":
         cwd => "/tmp",
-        command => "mysql -uroot quartz < /tmp/create_quartz_mysql.sql",
+        command => "mysql -uroot quartz < /srv/pentahodata/create_quartz_mysql.sql",
         refreshonly => true,
         require => File["/tmp/create_quartz_mysql.sql"],
 }
