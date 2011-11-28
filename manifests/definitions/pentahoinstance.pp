@@ -37,13 +37,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
   class { "pentaho::mysql":
     require => Package["pentaho-biserver"],
   }
-  
-    file { '/srv/tomcat/pentaho_biserver/bin/setenv-local.sh':
-      ensure  => present,
-      content => template('pentaho/pentaho_setenv-local.sh.erb'),
-      mode    => 755,
-      require => Tomcat::Instance["pentaho_biserver"],
-      }
+
       
   #pentaho/META-INF/context.xml
     file { '/srv/tomcat/pentaho_biserver/webapps/pentaho/META-INF/context.xml':
