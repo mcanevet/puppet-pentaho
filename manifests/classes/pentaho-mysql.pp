@@ -1,112 +1,123 @@
 class pentaho::mysql {
 
-  include mysql::server
-
-  mysql::database{"hibernate":
-    ensure   => present
+  $mysql_data_dir = "/mnt/mysql"
+  
+  file { "/mnt/mysql":
+  ensure => "directory",
+    owner => "mysql",
+    group => "mysql",
+  }
+  
+  
+  class { "mysql::server":
+    require => File["/mnt/mysql"],
   }
 
+mysql::database{"hibernate":
+  ensure   => present
+}
 
-  mysql::rights{"hibernate rights":
-    ensure   => present,
-    database => "hibernate",
-    user     => "hibuser",
-    password => "password",
-    require => Mysql::Database["hibernate"],
-  }
 
-  file { "/tmp/create_repository_mysql.sql":
+mysql::rights{"hibernate rights":
+  ensure   => present,
+  database => "hibernate",
+  user     => "hibuser",
+  password => "password",
+  require => Mysql::Database["hibernate"],
+}
+
+file { "/srv/pentahodata/create_repository_mysql.sql":
     mode => 440,
     owner => root,
     group => root,
     source => "puppet:///modules/pentaho/create_repository_mysql.sql",
     require => Mysql::Rights["hibernate rights"],
     notify => Exec["importhibernate"],
-  }
+}
 
-  exec { "importhibernate":
-    cwd => "/tmp",
-    command => "mysql -uroot hibernate < /tmp/create_repository_mysql.sql",
-    refreshonly => true,
-    require => File["/tmp/create_repository_mysql.sql"],
-  }
+exec { "importhibernate":
+        cwd => "/tmp",
+        command => "mysql -uroot hibernate < /tmp/create_repository_mysql.sql",
+        refreshonly => true,
+        require => File["/tmp/create_repository_mysql.sql"],
+}
 
 
-  file { "/tmp/create_sample_datasource_mysql.sql":
+file { "/srv/pentahodata/create_sample_datasource_mysql.sql":
     mode => 440,
     owner => root,
     group => root,
     source => "puppet:///modules/pentaho/create_sample_datasource_mysql.sql",
     require => Mysql::Rights["hibernate rights"],
     notify => Exec["importhibernate2"],
-  }
+}
 
-  exec { "importhibernate2":
-    cwd => "/tmp",
-    command => "mysql -uroot hibernate < /tmp/create_sample_datasource_mysql.sql",
-    refreshonly => true,
-    require => File["/tmp/create_sample_datasource_mysql.sql"],
-  }
-
-
-  mysql::database{"sampledata":
-    ensure   => present
-  }
+exec { "importhibernate2":
+        cwd => "/tmp",
+        command => "mysql -uroot hibernate < /tmp/create_sample_datasource_mysql.sql",
+        refreshonly => true,
+        require => File["/tmp/create_sample_datasource_mysql.sql"],
+}
 
 
-  mysql::rights{"sampledata rights":
-    ensure   => present,
-    database => "sampledata",
-    user     => "pentaho_user",
-    password => "password",
-    require => Mysql::Database["sampledata"],
-  }
+mysql::database{"sampledata":
+  ensure   => present
+}
 
-  file { "/tmp/sampledata_mysql.sql":
+
+mysql::rights{"sampledata rights":
+  ensure   => present,
+  database => "sampledata",
+  user     => "pentaho_user",
+  password => "password",
+  require => Mysql::Database["sampledata"],
+}
+
+file { "/srv/pentahodata/sampledata_mysql.sql":
     mode => 440,
     owner => root,
     group => root,
     source => "puppet:///modules/pentaho/sampledata_mysql.sql",
     require => Mysql::Rights["sampledata rights"],
     notify => Exec["importsampledata"],
-  }
+}
 
-  exec { "importsampledata":
-    cwd => "/tmp",
-    command => "mysql -uroot sampledata < /tmp/sampledata_mysql.sql",
-    refreshonly => true,
-    require => File["/tmp/sampledata_mysql.sql"],
-  }
-
-
-  mysql::database{"quartz":
-    ensure   => present
-  }
+exec { "importsampledata":
+        cwd => "/tmp",
+        command => "mysql -uroot sampledata < /tmp/sampledata_mysql.sql",
+        refreshonly => true,
+        require => File["/tmp/sampledata_mysql.sql"],
+}
 
 
-  mysql::rights{"quartz rights":
-    ensure   => present,
-    database => "quartz",
-    user     => "pentaho_user",
-    password => "password",
-    require => Mysql::Database["quartz"],
-  }
+mysql::database{"quartz":
+  ensure   => present
+}
 
-  file { "/tmp/create_quartz_mysql.sql":
+
+mysql::rights{"quartz rights":
+  ensure   => present,
+  database => "quartz",
+  user     => "pentaho_user",
+  password => "password",
+  require => Mysql::Database["quartz"],
+}
+
+file { "/srv/pentahodata/create_quartz_mysql.sql":
     mode => 440,
     owner => root,
     group => root,
     source => "puppet:///modules/pentaho/create_quartz_mysql.sql",
     require => Mysql::Rights["quartz rights"],
     notify => Exec["importquartz"],
-  }
+}
 
-  exec { "importquartz":
-    cwd => "/tmp",
-    command => "mysql -uroot quartz < /tmp/create_quartz_mysql.sql",
-    refreshonly => true,
-    require => File["/tmp/create_quartz_mysql.sql"],
-  }
+exec { "importquartz":
+        cwd => "/tmp",
+        command => "mysql -uroot quartz < /tmp/create_quartz_mysql.sql",
+        refreshonly => true,
+        require => File["/tmp/create_quartz_mysql.sql"],
+}
 
 
 
