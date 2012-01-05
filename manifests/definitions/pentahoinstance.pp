@@ -93,12 +93,6 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       require => Package["pentaho-biserver"],
     }
 
-  file { '/srv/tomcat/pentaho_biserver/lib/mysql-connector-java-5.1.17.jar':
-      ensure  => present,
-      source => "puppet:///modules/pentaho/mysql-connector-java-5.1.17.jar",
-      mode    => 755,
-        require => Package["pentaho-biserver"],
-      }
 
       file { '/opt/pentaho-solutions/system/hibernate/hibernate-settings.xml':
       ensure  => present,
@@ -113,4 +107,18 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     mode    => 755,
     require => Package["pentaho-biserver"],
     }
+    
+       #mysql jar
+      file { '/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar':
+      ensure  => present,
+	  source => "puppet:///modules/pentaho/mysql-connector-java-5.1.17.jar",
+      mode    => 755,
+      }
+      
+      #c3p0 jar
+      file { '/opt/apache-tomcat/lib/c3p0-0.9.1.2.jar':
+      ensure  => present,
+	  source => "puppet:///modules/pentaho/c3p0-0.9.1.2.jar",
+      mode    => 755,
+      }
 }
