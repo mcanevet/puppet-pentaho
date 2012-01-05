@@ -29,4 +29,18 @@ class pentaho::server {
       mode    => 755,
       }
  
+   #mysql jar
+      file { '/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar':
+      ensure  => present,
+	  source => "puppet:///modules/pentaho/mysql-connector-java-5.1.17.jar",
+      mode    => 755,
+      }
+      
+      #c3p0 jar
+      file { '/opt/apache-tomcat/lib/c3p0-0.9.1.2.jar':
+      ensure  => present,
+	  source => "puppet:///modules/pentaho/c3p0-0.9.1.2.jar",
+      mode    => 755,
+      }
+ 
 }
