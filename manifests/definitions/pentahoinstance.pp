@@ -24,7 +24,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
 
   package { "pentaho-biserver":
      ensure => present,
-     require => Tomcat::Instance["pentaho_biserver"],
+     #require => Tomcat::Instance["pentaho_biserver"],
      }
      
   tomcat::instance {"pentaho_biserver":
