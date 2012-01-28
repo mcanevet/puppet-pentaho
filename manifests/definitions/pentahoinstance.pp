@@ -34,6 +34,14 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     http_port    => "${tomcat_http}",
   }
   
+  service{ "tomcat-pentaho_biserver":
+  	ensure => running,
+  	subscribe => File["/opt/administration-console/resource/config/console.xml","/srv/tomcat/pentaho_biserver/webapps/pentaho/META-INF/context.xml",
+  	"/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/pentaho.xml","/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/web.xml",
+  	"/opt/pentaho-solutions/system/applicationContext-spring-security-hibernate.properties","/opt/pentaho-solutions/system/hibernate/mysql5.hibernate.cfg.xml",
+  	"/opt/pentaho-solutions/system/hibernate/hibernate-settings.xml","/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/classes/log4j.xml",
+  	"/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar","/opt/apache-tomcat/lib/c3p0-0.9.1.2.jar"],
+  }
   class { "pentaho::mysql":
     require => Package["pentaho-biserver"],
   }
@@ -43,6 +51,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       content => template('pentaho/admin_console.xml.erb'),
       mode    => 755,
       require => Package["pentaho-biserver"],
+      replace => false,	
       }
       
   #pentaho/META-INF/context.xml
@@ -51,6 +60,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       content => template('pentaho/pentaho_context.xml.erb'),
       mode    => 755,
       require => Package["pentaho-biserver"],
+      replace => false,
       }
     
       file { ["/srv/tomcat/pentaho_biserver/conf/",
@@ -59,6 +69,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
             ensure  => "directory",
             mode    => 755,
             require => Package["pentaho-biserver"],
+            replace => false,
             }
     #pentaho/META-INF/context.xml
       file { '/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/pentaho.xml':
@@ -68,13 +79,15 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
         require => [Package["pentaho-biserver"], File["/srv/tomcat/pentaho_biserver/conf/",
         "/srv/tomcat/pentaho_biserver/conf/Catalina/",
         "/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/"]],
+        replace => false,
         }
 #pentaho/WEB-INF/web.xml
     file { '/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/web.xml':
     ensure  => present,
     content => template('pentaho/pentaho_web.xml.erb'),
     mode    => 755,
-      require => Package["pentaho-biserver"],
+    require => Package["pentaho-biserver"],
+    replace => false,
     }
 
 #pentaho-solutions/system/applicationContext-spring-security-hibernate.properties
@@ -82,7 +95,8 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     ensure  => present,
     content => template('pentaho/solution_applicationContext-spring-security-hibernate.properties.erb'),
     mode    => 755,
-      require => Package["pentaho-biserver"],
+    require => Package["pentaho-biserver"],
+    replace => false,
     }
 
 #pentaho-solutions/system/hibernate/mysql5.hibernate.cfg.xml
@@ -90,7 +104,8 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     ensure  => present,
     content => template('pentaho/solution_mysql5.hibernate.cfg.xml.erb'),
     mode    => 755,
-      require => Package["pentaho-biserver"],
+    require => Package["pentaho-biserver"],
+    replace => false,
     }
 
 
@@ -99,6 +114,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       content => template('pentaho/solution_hibernate-settings.xml.erb'),
       mode    => 755,
         require => Package["pentaho-biserver"],
+      replace => false,
       }
       
   file { '/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/classes/log4j.xml':
@@ -106,6 +122,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     content => template('pentaho/pentaho_log4j.xml.erb'),
     mode    => 755,
     require => Package["pentaho-biserver"],
+    replace => false,
     }
     
        #mysql jar
