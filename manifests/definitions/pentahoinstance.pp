@@ -34,14 +34,6 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     http_port    => "${tomcat_http}",
   }
   
-  service{ "tomcat-pentaho_biserver":
-  	ensure => running,
-  	subscribe => File["/opt/administration-console/resource/config/console.xml","/srv/tomcat/pentaho_biserver/webapps/pentaho/META-INF/context.xml",
-  	"/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/pentaho.xml","/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/web.xml",
-  	"/opt/pentaho-solutions/system/applicationContext-spring-security-hibernate.properties","/opt/pentaho-solutions/system/hibernate/mysql5.hibernate.cfg.xml",
-  	"/opt/pentaho-solutions/system/hibernate/hibernate-settings.xml","/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/classes/log4j.xml",
-  	"/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar","/opt/apache-tomcat/lib/c3p0-0.9.1.2.jar"],
-  }
   class { "pentaho::mysql":
     require => Package["pentaho-biserver"],
   }
@@ -52,6 +44,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       mode    => 755,
       require => Package["pentaho-biserver"],
       replace => false,	
+      notify => Service["tomcat-pentaho_biserver"],
       }
       
   #pentaho/META-INF/context.xml
@@ -60,6 +53,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       content => template('pentaho/pentaho_context.xml.erb'),
       mode    => 755,
       require => Package["pentaho-biserver"],
+      notify => Service["tomcat-pentaho_biserver"],
       replace => false,
       }
     
@@ -79,6 +73,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
         require => [Package["pentaho-biserver"], File["/srv/tomcat/pentaho_biserver/conf/",
         "/srv/tomcat/pentaho_biserver/conf/Catalina/",
         "/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/"]],
+        notify => Service["tomcat-pentaho_biserver"],
         replace => false,
         }
 #pentaho/WEB-INF/web.xml
@@ -86,6 +81,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     ensure  => present,
     content => template('pentaho/pentaho_web.xml.erb'),
     mode    => 755,
+      notify => Service["tomcat-pentaho_biserver"],
     require => Package["pentaho-biserver"],
     replace => false,
     }
@@ -95,6 +91,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     ensure  => present,
     content => template('pentaho/solution_applicationContext-spring-security-hibernate.properties.erb'),
     mode    => 755,
+          notify => Service["tomcat-pentaho_biserver"],
     require => Package["pentaho-biserver"],
     replace => false,
     }
@@ -105,6 +102,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     content => template('pentaho/solution_mysql5.hibernate.cfg.xml.erb'),
     mode    => 755,
     require => Package["pentaho-biserver"],
+          notify => Service["tomcat-pentaho_biserver"],
     replace => false,
     }
 
@@ -113,6 +111,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       ensure  => present,
       content => template('pentaho/solution_hibernate-settings.xml.erb'),
       mode    => 755,
+            notify => Service["tomcat-pentaho_biserver"],
         require => Package["pentaho-biserver"],
       replace => false,
       }
@@ -121,6 +120,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     ensure  => present,
     content => template('pentaho/pentaho_log4j.xml.erb'),
     mode    => 755,
+      notify => Service["tomcat-pentaho_biserver"],
     require => Package["pentaho-biserver"],
     replace => false,
     }
@@ -128,6 +128,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
        #mysql jar
       file { '/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar':
       ensure  => present,
+            notify => Service["tomcat-pentaho_biserver"],
 	  source => "puppet:///modules/pentaho/mysql-connector-java-5.1.17.jar",
       mode    => 755,
       }
@@ -135,6 +136,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
       #c3p0 jar
       file { '/opt/apache-tomcat/lib/c3p0-0.9.1.2.jar':
       ensure  => present,
+            notify => Service["tomcat-pentaho_biserver"],
 	  source => "puppet:///modules/pentaho/c3p0-0.9.1.2.jar",
       mode    => 755,
       }
