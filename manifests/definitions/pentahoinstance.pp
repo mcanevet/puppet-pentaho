@@ -28,6 +28,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
     ajp_port    => "${tomcat_ajp}",
     server_port    => "${tomcat_server}",
     http_port    => "${tomcat_http}",
+    require => Class["pentaho::mysql"],
   }
   
 
