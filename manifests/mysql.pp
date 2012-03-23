@@ -43,7 +43,7 @@ class pentaho::mysql {
 			command =>
 			"mysql -uroot hibernate < /srv/pentahodata/create_sample_datasource_mysql.sql",
 			refreshonly => true,
-			require => File["/srv/pentahodata/create_sample_datasource_mysql.sql"],
+			require => [File["/srv/pentahodata/create_sample_datasource_mysql.sql"], Exec["importhibernate"]],
 	}
 	mysql::database {
 		"sampledata" :

@@ -6,7 +6,7 @@ class pentaho::server {
 	
 	file {
 		"/usr/bin/remove_config.sh":
-		content => "puppet:///modules/pentaho/remove_config.sh",
+		source => "puppet:///modules/pentaho/remove_config.sh",
 		mode => 700,
 		ensure => present,
 	}
