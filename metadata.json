@@ -1,0 +1,51 @@
+{
+  "name": "Analytical Labs-pentaho",
+  "author": "Tom Barber",
+  "description": "",
+  "license": "",
+  "project_page": "",
+  "source": "",
+  "summary": "",
+  "version": "1.0",
+  "checksums": {
+    "Modulefile": "e28cbb5e3233aa0c87e4da22a86123ac",
+    "README": "d41d8cd98f00b204e9800998ecf8427e",
+    "files/c3p0-0.9.1.2.jar": "45db3fd891e1f22cc90109ac7e473c73",
+    "files/create_quartz_mysql.sql": "079010373436f521af1bd49fee64124d",
+    "files/create_repository_mysql.sql": "15ada9ce664ac1e10665753711064147",
+    "files/create_sample_datasource_mysql.sql": "5e55287061722b940b69db5a5916b810",
+    "files/migration.sql": "db56b7a7c3d32197b81338d26deded39",
+    "files/mysql-connector-java-5.1.17.jar": "f363ecce2d02ebf6224f8fd3925400d9",
+    "files/remove_config.sh": "37fd236672d887e4dd4ab6a50ae56137",
+    "files/sampledata_mysql.sql": "12f79fef9742e1a5b0c3de83d58c32bf",
+    "manifests/apt.pp": "3bc2748bfec7901b6ef3d03e4ac34a21",
+    "manifests/biserver/instance.pp": "e0750a889c51ebd266de17719950e4bd",
+    "manifests/git.pp": "a89625c4477dd7ee59e24a768a50a001",
+    "manifests/mysql.pp": "01f985f16add3e4171974583f1a9e301",
+    "manifests/server.pp": "c893d8a60df971d421421fff2c42e6f0",
+    "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
+    "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
+    "templates/admin_console.xml.erb": "62523f0325e65291ae25adcc9008e8cc",
+    "templates/pentaho_context.xml.erb": "03415599ed0129b2bad47729c9f6f186",
+    "templates/pentaho_log4j.xml.erb": "0985fb99c0021cfa41a12a05a11b4f6f",
+    "templates/pentaho_web.xml.erb": "671d8859f984e4a71adc6be5f124ff54",
+    "templates/solution_applicationContext-spring-security-hibernate.properties.erb": "740a2850ae054e419eac7c3b043e4a15",
+    "templates/solution_hibernate-settings.xml.erb": "b72da6be73112817de2d67451a10ce1c",
+    "templates/solution_mysql5.hibernate.cfg.xml.erb": "8ffd18a81494c18259f0c555a818f557",
+    "tests/init.pp": "7a6a7fb00e58593603f7e699cb4d8adc"
+  },
+  "dependencies": [
+    {
+      "name": "Analytical Labs/apt",
+      "versionRequirement": "\u003d\u003d1.0"
+    },
+    {
+      "name": "Analytical Labs/mysql",
+      "versionRequirement": "\u003d\u003d1.0"
+    },
+    {
+      "name": "Analytical Labs/tomcat",
+      "versionRequirement": "\u003d\u003d1.0"
+    }
+  ]
+}

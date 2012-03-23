@@ -1,0 +1,12 @@
+name 'Analytical Labs-pentaho'
+version '1.0'
+
+author 'Tom Barber'
+license ''
+project_page ''
+source ''
+summary ''
+description ''
+dependency 'Analytical Labs/apt', '==1.0'
+dependency 'Analytical Labs/mysql', '==1.0'
+dependency 'Analytical Labs/tomcat', '==1.0'
