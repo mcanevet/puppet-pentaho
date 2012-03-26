@@ -67,11 +67,11 @@ class pentaho::postgresql {
 #			notify => Exec["importsampledata"],
 #	}
 
-  file { "/srv/pentahodata/sampledata_postgresql.sql":
+  file { "/srv/pentahodata/sampledata_postgresql.sql.gz":
     mode => 440,
     owner => root,
     group => root,
-    source => "puppet:///modules/pentaho/sample_data_postgresql.sql",
+    source => "puppet:///modules/pentaho/sample_data_postgresql.sql.gz",
     require => File["/srv/pentahodata"],
     notify => Postgresql::Database["sampledata"],
   }
@@ -80,7 +80,7 @@ postgresql::database{ "sampledata":
   owner=>postgres,
   encoding=>"UTF8",
   template=>"template1",
-  source=>"puppet:///modules/pentaho/sample_data_postgresql.sql",
+  source=>"puppet:///modules/pentaho/sample_data_postgresql.sql.gz",
   overwrite=>false
   }
    
