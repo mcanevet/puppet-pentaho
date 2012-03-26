@@ -49,7 +49,7 @@ define pentaho::biserver::instance ($ensure,
 				ajp_port => "${tomcat_ajp}",
 				server_port => "${tomcat_server}",
 				http_port => "${tomcat_http}",
-				require => Class["pentaho::postgresl"],
+				require => Class["pentaho::postgresql"],
 		}
 	}
 }
