@@ -40,7 +40,7 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
    	
    	if($database=="postgresql8"){
    	 class { "pentaho::server":
-   	require => Class["pentaho::postgresql"],
+   	require => Class["Pentaho::Postgresql"],
    	}
    	}	
 }
