@@ -80,7 +80,7 @@ postgresql::database{ "sampledata":
   owner=>postgres,
   encoding=>"UTF8",
   template=>"template1",
-  source=>"puppet:///modules/pentaho/sample_data_postgresql.sql.gz",
+  source=>"/srv/pentahodata/sampledata_postgresql.sql.gz",
   overwrite=>false
   }
    
