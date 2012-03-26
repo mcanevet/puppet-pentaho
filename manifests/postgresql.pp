@@ -68,9 +68,9 @@ class pentaho::postgresql {
 #	}
 
   file { "/srv/pentahodata/sampledata_postgresql.sql.gz":
-    mode => 440,
-    owner => root,
-    group => root,
+    mode => 750,
+    owner => postgres,
+    group => postgres,
     source => "puppet:///modules/pentaho/sample_data_postgresql.sql.gz",
     require => File["/srv/pentahodata"],
     notify => Postgresql::Database["sampledata"],
