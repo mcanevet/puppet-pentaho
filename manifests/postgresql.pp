@@ -66,6 +66,24 @@ class pentaho::postgresql {
 #			require => Mysql::Rights["sampledata rights"],
 #			notify => Exec["importsampledata"],
 #	}
+
+  file { "/srv/pentahodata/sampledata_postgresql.sql":
+    mode => 440,
+    owner => root,
+    group => root,
+    source => "puppet:///modules/pentaho/sample_data_postgresql.sql",
+    require => File["/srv/pentahodata"],
+    notify => Postgresql::Database["sampledata"],
+  }
+postgresql::database{ "sampledata":
+  ensure=>present,
+  owner=>postgres,
+  encoding=>false,
+  template=>"template1",
+  source=>"puppet:///modules/pentaho/sample_data_postgresql.sql",
+  overwrite=>false
+  }
+   
 #	exec {
 #		"importsampledata" :
 #			cwd => "/tmp",
