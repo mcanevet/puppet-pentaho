@@ -78,7 +78,7 @@ class pentaho::postgresql {
 postgresql::database{ "sampledata":
   ensure=>present,
   owner=>postgres,
-  encoding=>false,
+  encoding=>"UTF8",
   template=>"template1",
   source=>"puppet:///modules/pentaho/sample_data_postgresql.sql",
   overwrite=>false
