@@ -20,7 +20,7 @@
     "files/sample_data_postgresql.sql": "2e97c5e0ef6aa779af5e498c24655195",
     "files/sampledata_mysql.sql": "12f79fef9742e1a5b0c3de83d58c32bf",
     "manifests/apt.pp": "3bc2748bfec7901b6ef3d03e4ac34a21",
-    "manifests/biserver/instance.pp": "e0750a889c51ebd266de17719950e4bd",
+    "manifests/biserver/instance.pp": "080f368e4d770762e01272cdf4a618f9",
     "manifests/git.pp": "a89625c4477dd7ee59e24a768a50a001",
     "manifests/mysql.pp": "48c8ad664f0c149b20ece560ab2aaf2e",
     "manifests/server.pp": "438c90a4f419c4b223d3f760c6d8c696",

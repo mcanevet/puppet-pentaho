@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301  USA
 #
-define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_server) {
+define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_server, $database) {
   $tomcat_version = "6.0.29"
   include tomcat::source
   include pentaho::mysql
@@ -32,8 +32,15 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
   }
   
 
-
+	if($database=="mysql"){
    class { "pentaho::server":
    	require => Class["pentaho::mysql"],
    	}
+   	}
+   	
+   	if($database=="postgresql8"){
+   	 class { "pentaho::server":
+   	require => Class["pentaho::postgresql"],
+   	}
+   	}	
 }
