@@ -49,7 +49,7 @@ class pentaho::postgresql {
  exec { "Import dump into create datasource postgres db":
       command => "zcat /srv/pentahodata/create_sample_datasource_postgresql.sql.gz | psql hibernate",
       user => "postgres",
-      require => File["/srv/pentahodata/create_sample_datasource_postgresql.sql.gz"],
+      require => [Postgresql::Database["hibernate"],File["/srv/pentahodata/create_sample_datasource_postgresql.sql.gz"]],
     }
   
   
@@ -63,7 +63,7 @@ class pentaho::postgresql {
   exec { "Import dump into load sample users postgres db":
       command => "zcat /srv/pentahodata/load_sample_users_postgresql.sql.gz | psql quartz",
       user => "postgres",
-      require =>File["/srv/pentahodata/load_sample_users_postgresql.sql.gz"],
+      require =>[Postgresql::Database["hibernate"],File["/srv/pentahodata/load_sample_users_postgresql.sql.gz"]],
     }
   
   
