@@ -21,7 +21,7 @@
 define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_server, $database) {
   $tomcat_version = "6.0.29"
   include tomcat::source
-  include pentaho::mysql
+  
  
   tomcat::instance {"pentaho_biserver":
     ensure      => present,
@@ -33,12 +33,14 @@ define pentaho::biserver::instance($ensure , $tomcat_http, $tomcat_ajp, $tomcat_
   
 
 	if($database=="mysql"){
+		include pentaho::mysql
    class { "pentaho::server":
    	require => Class["pentaho::mysql"],
    	}
    	}
    	
    	if($database=="postgresql8"){
+   		include pentaho::postgresql
    	 class { "pentaho::server":
    	require => Class["Pentaho::Postgresql"],
    	}
