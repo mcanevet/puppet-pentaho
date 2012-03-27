@@ -11,13 +11,21 @@ class pentaho::postgresql {
   
   postgresql::database{ "hibernate":
   ensure=>present,
-  owner=>pentaho_user,
+  owner=>hibuser,
   encoding=>"UTF8",
   template=>"template1",
   source=>"/srv/pentahodata/create_repository_postgresql.sql.gz",
-  overwrite=>false
+  overwrite=>false,
+  require=>Postgresql::User["hibuser"],
   }
-  
+  	postgresql::user {
+		"hibuser" :
+			ensure => present,
+			password => "password",
+			superuser => false,
+			createdb => false,
+			createrole => false,
+	}
   
     file { "/srv/pentahodata/create_quartz_postgresql.sql.gz":
     mode => 750,
@@ -35,8 +43,17 @@ class pentaho::postgresql {
   template=>"template1",
   source=>"/srv/pentahodata/sampledata_postgresql.sql.gz",
   overwrite=>false
+  require=>Postgresql::User["pentaho_user"],
   }
   
+  	postgresql::user {
+		"pentaho_user" :
+			ensure => present,
+			password => "password",
+			superuser => false,
+			createdb => false,
+			createrole => false,
+	}
   
     file { "/srv/pentahodata/create_sample_datasource_postgresql.sql.gz":
     mode => 750,

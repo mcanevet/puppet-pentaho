@@ -27,7 +27,7 @@
     "manifests/biserver/instance.pp": "cee19d543d65f9a36a02b93d450fe68b",
     "manifests/git.pp": "a89625c4477dd7ee59e24a768a50a001",
     "manifests/mysql.pp": "48c8ad664f0c149b20ece560ab2aaf2e",
-    "manifests/postgresql.pp": "9e9a38406e5a6c7fef1dd9197b603c3e",
+    "manifests/postgresql.pp": "500126ca2c1b73371436b7a9bf5c0e50",
     "manifests/server.pp": "438c90a4f419c4b223d3f760c6d8c696",
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
     "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
