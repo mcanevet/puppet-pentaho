@@ -26,6 +26,14 @@ class pentaho::postgresql {
 			createdb => false,
 			createrole => false,
 	}
+    postgresql::hba { "access to database hibuser":
+    ensure   => present,
+    type     => 'local',
+    database => 'hibernate',
+    user     => 'all',
+    method   => 'trusted',
+    pgver    => '8.4',
+  }
   
     file { "/srv/pentahodata/create_quartz_postgresql.sql.gz":
     mode => 750,
