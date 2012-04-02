@@ -1,4 +1,24 @@
-class pentaho::server {
+class pentaho::server($database) {
+	if($database == "postgresql8"){
+	$driverClassName = "org.postgresql.Driver"
+	$quartzURL = "jdbc:postgresql://localhost:5432/quartz"
+	$hibernateURL = "jdbc:postgresql://localhost:5432/hibernate"
+	$hibernateUsername = "hibuser"
+	$hibernatePassword = "password"
+	$hibernateDialect = "org.hibernate.dialect.PostgreSQLDialect"
+	$configFile	= "system/hibernate/postgresql.hibernate.cfg.xml"
+	}
+	if ($database == "mysql"){
+	$driverClassName = "com.mysql.jdbc.Driver"
+	$quartzURL="jdbc:mysql://localhost/quartz"
+	$hibernateURL="jdbc:mysql://localhost/hibernate"
+	$hibernateUsername="hibuser"
+	$hibernatePassword="password"
+	$hibernateDialect="org.hibernate.dialect.MySQL5InnoDBDialect"
+	$configFile	="system/hibernate/mysql5.hibernate.cfg.xml"
+	}
+	
+	
 	package {
 		"pentaho-biserver" :
 			ensure => present,
@@ -16,6 +36,8 @@ class pentaho::server {
     creates => "/opt/.pentahoinit",
     require => [File["/usr/bin/remove_config.sh"], Package["pentaho-biserver"]]
 	}
+	
+
 	
 	file {
 		'/opt/administration-console/resource/config/console.xml' :
@@ -111,6 +133,7 @@ class pentaho::server {
 			replace => true,
 	}
 
+	if($database == "mysql"){
 	#mysql jar
 	file {
 		'/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar' :
@@ -127,5 +150,17 @@ class pentaho::server {
 			notify => Service["tomcat-pentaho_biserver"],
 			source => "puppet:///modules/pentaho/c3p0-0.9.1.2.jar",
 			mode => 755,
+	}
+	}
+	
+	if($database == "postgresql8"){
+		file {
+			'/opt/apache-tomcat/lib/postgresql-9.1-901.jdbc4.jar' :
+				ensure => present,
+				notify => Service["tomcat-pentaho_biserver"],
+				source => "puppet:///modules/pentaho/postgresql-9.1-901.jdbc4.jar",
+				mode => 755,
+	}
+		
 	}
 }
