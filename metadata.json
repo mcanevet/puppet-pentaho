@@ -33,7 +33,7 @@
     "spec/spec.opts": "a600ded995d948e393fbe2320ba8e51c",
     "spec/spec_helper.rb": "ca19ec4f451ebc7fdb035b52eae6e909",
     "templates/admin_console.xml.erb": "62523f0325e65291ae25adcc9008e8cc",
-    "templates/pentaho_context.xml.erb": "436115ed88df8b440604283ee4e61afe",
+    "templates/pentaho_context.xml.erb": "9c726ce11421088fa04aefefcb513490",
     "templates/pentaho_log4j.xml.erb": "0985fb99c0021cfa41a12a05a11b4f6f",
     "templates/pentaho_web.xml.erb": "671d8859f984e4a71adc6be5f124ff54",
     "templates/solution_applicationContext-spring-security-hibernate.properties.erb": "8a52a902dad909018de06d1f87c07e7e",
