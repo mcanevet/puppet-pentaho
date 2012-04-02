@@ -32,7 +32,7 @@ class pentaho::postgresql {
 			type => 'local',
 			database => 'hibernate',
 			user => 'all',
-			method => 'trusted',
+			method => 'trust',
 			pgver => '8.4',
 	}
 	file {
