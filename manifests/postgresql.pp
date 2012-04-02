@@ -70,7 +70,7 @@ class pentaho::postgresql {
 			owner => pentaho_user,
 			encoding => "UTF8",
 			template => "template1",
-			source => "/srv/pentahodata/sampledata_postgresql.sql.gz",
+			source => "/srv/pentahodata/create_quartz_postgresql.sql.gz",
 			overwrite => false,
 			require => Postgresql::User["pentaho_user"],
 	}
@@ -127,7 +127,7 @@ class pentaho::postgresql {
 	postgresql::database {
 		"sampledata" :
 			ensure => present,
-			owner => postgres,
+			owner => pentaho_user,
 			encoding => "UTF8",
 			template => "template1",
 			source => "/srv/pentahodata/sampledata_postgresql.sql.gz",
