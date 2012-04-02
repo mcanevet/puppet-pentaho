@@ -41,7 +41,9 @@ define pentaho::biserver::instance ($ensure,
 		}
 	}
 	if ($database == "postgresql8") {
-		include pentaho::postgresql 
+		class {
+			"pentaho::postgresql":
+		}
 		class {
 			"pentaho::server" :
 				database => $database,

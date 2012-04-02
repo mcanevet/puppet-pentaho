@@ -25,7 +25,7 @@
     "files/sample_data_postgresql.sql.gz": "3587e669cf6a03a3d0477658093a43a9",
     "files/sampledata_mysql.sql": "12f79fef9742e1a5b0c3de83d58c32bf",
     "manifests/apt.pp": "3bc2748bfec7901b6ef3d03e4ac34a21",
-    "manifests/biserver/instance.pp": "941c364170497a7ac5fd7332cafc2b85",
+    "manifests/biserver/instance.pp": "133691e014b18a6e08c368d125acde88",
     "manifests/git.pp": "a89625c4477dd7ee59e24a768a50a001",
     "manifests/mysql.pp": "48c8ad664f0c149b20ece560ab2aaf2e",
     "manifests/postgresql.pp": "743c61a627e407ac5eabf628a847f8f2",
