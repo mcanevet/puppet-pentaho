@@ -26,6 +26,16 @@ class pentaho::postgresql {
 			createdb => false,
 			createrole => false,
 	}
+	
+	postgresql::user {
+		"pentaho_user" :
+			ensure => present,
+			password => "password",
+			superuser => false,
+			createdb => false,
+			createrole => false,
+	}
+	
 	postgresql::hba {
 		"access to database hibuser" :
 			ensure => present,
