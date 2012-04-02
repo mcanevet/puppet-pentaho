@@ -35,6 +35,24 @@ class pentaho::postgresql {
 			method => 'trust',
 			pgver => '8.4',
 	}
+		postgresql::hba {
+		"access to quartz database pentaho_user" :
+			ensure => present,
+			type => 'local',
+			database => 'quartz',
+			user => 'all',
+			method => 'trust',
+			pgver => '8.4',
+	}
+		postgresql::hba {
+		"access to sampledata database hibuser" :
+			ensure => present,
+			type => 'local',
+			database => 'sampledata',
+			user => 'all',
+			method => 'trust',
+			pgver => '8.4',
+	}
 	file {
 		"/srv/pentahodata/create_quartz_postgresql.sql.gz" :
 			mode => 750,
