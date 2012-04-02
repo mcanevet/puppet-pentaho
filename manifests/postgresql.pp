@@ -90,7 +90,7 @@ class pentaho::postgresql {
 	exec {
 		"Import dump into load sample users postgres db" :
 			command =>
-			"zcat /srv/pentahodata/load_sample_users_postgresql.sql.gz | psql quartz",
+			"zcat /srv/pentahodata/load_sample_users_postgresql.sql.gz | psql hibernate",
 			user => "postgres",
 			require => [Postgresql::Database["hibernate"],
 			File["/srv/pentahodata/load_sample_users_postgresql.sql.gz"]],
