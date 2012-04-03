@@ -37,7 +37,15 @@ class pentaho::server($database) {
     require => [File["/usr/bin/remove_config.sh"], Package["pentaho-biserver"]]
 	}
 	
-
+	file {
+		'/opt/pentaho-solutions/system/quartz/quartz.properties' :
+			ensure => present,
+			content => template('pentaho/quartz.properties.erb'),
+			mode => 755,
+			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
+			replace => true,
+			notify => Service["tomcat-pentaho_biserver"],
+	}
 	
 	file {
 		'/opt/administration-console/resource/config/console.xml' :

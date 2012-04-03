@@ -131,6 +131,7 @@ class pentaho::postgresql {
 			encoding => "UTF8",
 			template => "template1",
 			source => "/srv/pentahodata/sampledata_postgresql.sql.gz",
-			overwrite => false
+			overwrite => false,
+			require => File["/srv/pentahodata/sampledata_postgresql.sql.gz"]
 	}
 }
