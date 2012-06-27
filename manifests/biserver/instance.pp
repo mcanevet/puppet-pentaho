@@ -37,10 +37,11 @@ define pentaho::biserver::instance ($ensure) {
   }
 
   file {"/srv/tomcat/${name}/webapps/pentaho.war":
-    ensure => $ensure,
-    source => 'file:///usr/share/pentaho/wars/tomcat/pentaho.war',
-    owner  => 'pentaho',
-    group  => 'pentaho',
+    ensure  => $ensure,
+    source  => 'file:///usr/share/pentaho/wars/tomcat/pentaho.war',
+    owner   => 'pentaho',
+    group   => 'pentaho',
+    require => Package['pentaho-biserver-wars'],
   }
 
 
@@ -49,6 +50,7 @@ define pentaho::biserver::instance ($ensure) {
     source => 'file:///usr/share/pentaho/wars/pentaho-style.war',
     owner  => 'pentaho',
     group  => 'pentaho',
+    require => Package['pentaho-biserver-wars'],
   }
 
   include pentaho::postgresql
