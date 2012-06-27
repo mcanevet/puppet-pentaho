@@ -19,18 +19,14 @@
 # MA 02110-1301  USA
 #
 class pentaho::apt {
-  include ::apt
-  $apt_key = extlookup('alabs_repo_key', '')
-  $apt_content = extlookup('alabs_repo_content', '')
-
-  apt::key { "Analytical Labs":
-    source => "${apt_key}"
+  apt::sources_list {'oracle-java':
+    ensure  => present,
+    content => "deb http://java:puiBekieP9@oracle-java.pkg.camptocamp.net/staging squeeze oracle-java\n",
   }
 
-  apt::sources_list { "analyticallabs":
-    content => "${apt_content}"
+  apt::sources_list {'pentaho':
+    ensure  => present,
+    content => "deb http://pkg.camptocamp.net/dev squeeze pentaho\n",
   }
-
-
 }
 

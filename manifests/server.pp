@@ -1,174 +1,141 @@
-class pentaho::server($database) {
-	if($database == "postgresql8"){
-	$driverClassName = "org.postgresql.Driver"
-	$quartzURL = "jdbc:postgresql://localhost:5432/quartz"
-	$hibernateURL = "jdbc:postgresql://localhost:5432/hibernate"
-	$hibernateUsername = "hibuser"
-	$hibernatePassword = "password"
-	$hibernateDialect = "org.hibernate.dialect.PostgreSQLDialect"
-	$configFile	= "system/hibernate/postgresql.hibernate.cfg.xml"
-	}
-	if ($database == "mysql"){
-	$driverClassName = "com.mysql.jdbc.Driver"
-	$quartzURL="jdbc:mysql://localhost/quartz"
-	$hibernateURL="jdbc:mysql://localhost/hibernate"
-	$hibernateUsername="hibuser"
-	$hibernatePassword="password"
-	$hibernateDialect="org.hibernate.dialect.MySQL5InnoDBDialect"
-	$configFile	="system/hibernate/mysql5.hibernate.cfg.xml"
-	}
-	
-	
-	package {
-		"pentaho-biserver" :
-			ensure => present,
-	}
-	
-	file {
-		"/usr/bin/remove_config.sh":
-		source => "puppet:///modules/pentaho/remove_config.sh",
-		mode => 700,
-		ensure => present,
-	}
-	
-	exec { "remove dud configs":
-    command => "/usr/bin/remove_config.sh",
-    creates => "/opt/.pentahoinit",
-    require => [File["/usr/bin/remove_config.sh"], Package["pentaho-biserver"]]
-	}
-	
-	file {
-		'/opt/pentaho-solutions/system/quartz/quartz.properties' :
-			ensure => present,
-			content => template('pentaho/quartz.properties.erb'),
-			mode => 755,
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			replace => true,
-			notify => Service["tomcat-pentaho_biserver"],
-	}
-	
-	file {
-		'/opt/administration-console/resource/config/console.xml' :
-			ensure => present,
-			content => template('pentaho/admin_console.xml.erb'),
-			mode => 755,
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			replace => true,
-			notify => Service["tomcat-pentaho_biserver"],
-	}
+class pentaho::server {
+  include pentaho::params
+  include pentaho::apt
 
-	#pentaho/META-INF/context.xml
-	file {
-		'/srv/tomcat/pentaho_biserver/webapps/pentaho/META-INF/context.xml' :
-			ensure => present,
-			content => template('pentaho/pentaho_context.xml.erb'),
-			mode => 755,
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			notify => Service["tomcat-pentaho_biserver"],
-			replace => true,
-	}
-	file {
-		["/srv/tomcat/pentaho_biserver/conf/",
-		"/srv/tomcat/pentaho_biserver/conf/Catalina/",
-		"/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/"] :
-			ensure => "directory",
-			mode => 755,
-			require => Package["pentaho-biserver"],
-			replace => true,
-	}
-	#pentaho/META-INF/context.xml
-	file {
-		'/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/pentaho.xml' :
-			ensure => present,
-			content => template('pentaho/pentaho_context.xml.erb'),
-			mode => 755,
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"],
-			File["/srv/tomcat/pentaho_biserver/conf/",
-			"/srv/tomcat/pentaho_biserver/conf/Catalina/",
-			"/srv/tomcat/pentaho_biserver/conf/Catalina/localhost/"]],
-			notify => Service["tomcat-pentaho_biserver"],
-			replace => true,
-	}
-	#pentaho/WEB-INF/web.xml
-	file {
-		'/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/web.xml' :
-			ensure => present,
-			content => template('pentaho/pentaho_web.xml.erb'),
-			mode => 755,
-			notify => Service["tomcat-pentaho_biserver"],
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			replace => true,
-	}
+  $pentaho_user = $pentaho::params::pentaho_user
+  $pentaho_password = $pentaho::params::pentaho_password
+  $hibuser_password = $pentaho::params::hibuser_password
 
-	#pentaho-solutions/system/applicationContext-spring-security-hibernate.properties
-	file {
-		'/opt/pentaho-solutions/system/applicationContext-spring-security-hibernate.properties' :
-			ensure => present,
-			content =>
-			template('pentaho/solution_applicationContext-spring-security-hibernate.properties.erb'),
-			mode => 755,
-			notify => Service["tomcat-pentaho_biserver"],
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			replace => true,
-	}
+  package {'sun-java6-jre':
+    ensure  => installed,
+    require => Apt::Sources_list['oracle-java'],
+  }
 
-	#pentaho-solutions/system/hibernate/mysql5.hibernate.cfg.xml
-	file {
-		'/opt/pentaho-solutions/system/hibernate/mysql5.hibernate.cfg.xml' :
-			ensure => present,
-			content => template('pentaho/solution_mysql5.hibernate.cfg.xml.erb'),
-			mode => 755,
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			notify => Service["tomcat-pentaho_biserver"],
-			replace => true,
-	}
-	file {
-		'/opt/pentaho-solutions/system/hibernate/hibernate-settings.xml' :
-			ensure => present,
-			content => template('pentaho/solution_hibernate-settings.xml.erb'),
-			mode => 755,
-			notify => Service["tomcat-pentaho_biserver"],
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			replace => true,
-	}
-	file {
-		'/srv/tomcat/pentaho_biserver/webapps/pentaho/WEB-INF/classes/log4j.xml' :
-			ensure => present,
-			content => template('pentaho/pentaho_log4j.xml.erb'),
-			mode => 755,
-			notify => Service["tomcat-pentaho_biserver"],
-			require => [Package["pentaho-biserver"],Exec["remove dud configs"]],
-			replace => true,
-	}
+  # biserver           => package
+  package {['pentaho-biserver-common', 'pentaho-biserver-wars', 'pentaho-biserver-plugin-saiku']:
+    ensure  => installed,
+    require => Apt::Sources_list['pentaho'],
+  }
 
-	if($database == "mysql"){
-	#mysql jar
-	file {
-		'/opt/apache-tomcat/lib/mysql-connector-java-5.1.17.jar' :
-			ensure => present,
-			notify => Service["tomcat-pentaho_biserver"],
-			source => "puppet:///modules/pentaho/mysql-connector-java-5.1.17.jar",
-			mode => 755,
-	}
 
-	#c3p0 jar
-	file {
-		'/opt/apache-tomcat/lib/c3p0-0.9.1.2.jar' :
-			ensure => present,
-			notify => Service["tomcat-pentaho_biserver"],
-			source => "puppet:///modules/pentaho/c3p0-0.9.1.2.jar",
-			mode => 755,
-	}
-	}
-	
-	if($database == "postgresql8"){
-		file {
-			'/opt/apache-tomcat/lib/postgresql-9.1-901.jdbc4.jar' :
-				ensure => present,
-				notify => Service["tomcat-pentaho_biserver"],
-				source => "puppet:///modules/pentaho/postgresql-9.1-901.jdbc4.jar",
-				mode => 755,
-	}
-		
-	}
+  # X11 required for graphs => xvfb
+  package {'xvfb':
+    ensure => present,
+  }
+
+  # Java libs
+  package {['libcommons-logging-java', 'liblog4j1.2-java', 'libpg-java', 'libc3p0-java', 'libpostgresql-jdbc-java']:
+    ensure => present,
+  }
+
+  group {'pentaho':
+    ensure => present,
+  }
+
+  # logdir and user provided by package pentaho-biserver-common
+  file {'/var/log/pentaho':
+    ensure  => directory,
+    owner   => 'tomcat',
+    group   => 'pentaho',
+    require => Package['pentaho-biserver-common'],
+  }
+
+
+  file {'/usr/share/tomcat6/lib/c3p0.jar':
+    ensure => link,
+    target => '/usr/share/java/c3p0.jar',
+  }
+
+  # TODO: Use Augeas XML lens with puppet 2.X
+  file {'/usr/share/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
+    ensure => $ensure,
+    content => "<?xml version='1.0' encoding='UTF-8'?>
+    <!DOCTYPE hibernate-configuration
+    PUBLIC \"-//Hibernate/Hibernate Configuration DTD//EN\"
+    \"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd\">
+    <hibernate-configuration>
+    <session-factory>
+
+    <!-- C3P0 connection pool -->
+    <property name=\"connection.provider_class\">org.hibernate.connection.C3P0ConnectionProvider</property>
+    <property name=\"hibernate.c3p0.acquire_increment\">3</property>
+    <property name=\"hibernate.c3p0.idle_test_period\">10</property>
+    <property name=\"hibernate.c3p0.min_size\">5</property>
+    <property name=\"hibernate.c3p0.max_size\">75</property>
+    <property name=\"hibernate.c3p0.max_statements\">0</property>
+    <property name=\"hibernate.c3p0.timeout\">25200</property>
+    <property name=\"hibernate.c3p0.preferredTestQuery\">select 1</property>
+    <property name=\"hibernate.c3p0.testConnectionOnCheckout\">true</property>
+    <!-- /C3P0 connection pool -->
+
+    <property name=\"cache.provider_class\">org.hibernate.cache.EhCacheProvider</property>
+
+    <property name=\"hibernate.generate_statistics\">true</property>
+    <property name=\"hibernate.cache.use_query_cache\">true</property>
+    <!--  Postgres 8 Configuration -->
+    <property name=\"connection.driver_class\">org.postgresql.Driver</property>
+    <property name=\"connection.url\">jdbc:postgresql://localhost:5432/hibernate</property>
+    <property name=\"dialect\">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name=\"connection.username\">hibuser</property>
+    <property name=\"connection.password\">${hibuser_password}</property>
+    <property name=\"connection.pool_size\">10</property>
+    <property name=\"show_sql\">false</property>
+    <property name=\"hibernate.jdbc.use_streams_for_binary\">true</property>
+    <!-- replaces DefinitionVersionManager -->
+    <property name=\"hibernate.hbm2ddl.auto\">update</property>
+    <!-- load resource from classpath -->
+    <mapping resource=\"hibernate/postgresql.hbm.xml\" />
+    <!--  This is only used by Pentaho Administration Console. Spring Security will not use these mapping files --> 
+    <mapping resource=\"PentahoUser.hbm.xml\" />
+    <mapping resource=\"PentahoRole.hbm.xml\" />
+    <mapping resource=\"PentahoUserRoleMapping.hbm.xml\" />
+
+    </session-factory>
+    </hibernate-configuration>
+    "
+  }
+
+  # TODO: Use Augeas properties lens with puppet 2.X
+  file {'/usr/share/pentaho/solutions/system/applicationContext-spring-security-hibernate.properties':
+    ensure  => $ensure,
+    content => "jdbc.driver=org.postgresql.Driver
+    jdbc.url=jdbc:postgresql://localhost:5432/hibernate
+    jdbc.username=hibuser
+    jdbc.password=${hibuser_password}
+    hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+    ",
+  }
+
+  file {'/usr/share/pentaho/solutions/system/hibernate/hibernate-settings.xml':
+    ensure => $ensure,
+    source => 'file:///usr/share/pentaho/solutions/system/dialects/postgresql/hibernate/hibernate-settings.xml',
+  }
+
+  # TODO: Use Augeas properties lens with puppet 2.X
+  file {'/usr/share/pentaho/solutions/system/quartz/quartz.properties':
+    ensure  => $ensure,
+    content => 'org.quartz.scheduler.instanceName = PentahoQuartzScheduler
+    org.quartz.scheduler.instanceId = 1
+    org.quartz.scheduler.rmi.export = false
+    org.quartz.scheduler.rmi.proxy = false
+    org.quartz.scheduler.wrapJobExecutionInUserTransaction = false
+    org.quartz.threadPool.class = org.quartz.simpl.SimpleThreadPool
+    org.quartz.threadPool.threadCount = 10
+    org.quartz.threadPool.threadPriority = 5
+    org.quartz.threadPool.threadsInheritContextClassLoaderOfInitializingThread = true
+
+    org.quartz.jobStore.class = org.quartz.impl.jdbcjobstore.JobStoreTX
+
+    org.quartz.jobStore.misfireThreshold = 60000
+    # Set this with Augeas in the future
+    org.quartz.jobStore.driverDelegateClass = org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+    org.quartz.jobStore.useProperties = false
+    org.quartz.jobStore.dataSource = myDS
+    org.quartz.jobStore.tablePrefix = QRTZ_
+    org.quartz.jobStore.isClustered = false
+
+    org.quartz.dataSource.myDS.jndiURL = Quartz
+    ',
+  }
+
 }
