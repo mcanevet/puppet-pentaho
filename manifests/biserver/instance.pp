@@ -22,6 +22,7 @@ define pentaho::biserver::instance ($ensure) {
 
   include pentaho::params
   include pentaho::server
+  include pentaho::postgresql
   include tomcat
 
   $pentaho_user = $pentaho::params::pentaho_user
@@ -43,31 +44,37 @@ define pentaho::biserver::instance ($ensure) {
     setenv  => ['PENTAHO_INSTALLED_LICENSE_PATH="/home/pentaho/.installedLicenses.xml"'],
   }
 
-  file {"/srv/tomcat/${name}/webapps/pentaho.war":
-    ensure  => $ensure,
-    source  => 'file:///usr/share/pentaho/wars/tomcat/pentaho.war',
-    owner   => 'pentaho',
-    group   => 'pentaho',
-    require => [Package['pentaho-biserver-wars'], Tomcat::Instance[$name]],
+  file {
+    "/srv/tomcat/${name}/webapps/pentaho.war":
+      ensure  => $ensure,
+      source  => 'file:///usr/share/pentaho/wars/tomcat/pentaho.war',
+      owner   => 'pentaho',
+      group   => 'pentaho',
+      require => [Package['pentaho-biserver-wars'], Tomcat::Instance[$name]];
+
+    "/srv/tomcat/${name}/webapps/pentaho-style.war":
+      ensure => $ensure,
+      source => 'file:///usr/share/pentaho/wars/pentaho-style.war',
+      owner  => 'pentaho',
+      group  => 'pentaho',
+      require => [Package['pentaho-biserver-wars'], Tomcat::Instance[$name]];
   }
-
-
-  file {"/srv/tomcat/${name}/webapps/pentaho-style.war":
-    ensure => $ensure,
-    source => 'file:///usr/share/pentaho/wars/pentaho-style.war',
-    owner  => 'pentaho',
-    group  => 'pentaho',
-    require => [Package['pentaho-biserver-wars'], Tomcat::Instance[$name]],
-  }
-
-  include pentaho::postgresql
 
   # Config files
 
-  file {"/srv/tomcat/${name}/conf/Catalina/localhost/pentaho.xml":
-    ensure  => $ensure,
-    content => template('pentaho/pentaho_context.xml.erb'),
-    require => Tomcat::Instance[$name],
+  file {
+    "/srv/tomcat/${name}/conf/Catalina":
+      ensure => directory,
+      require => Tomcat::Instance[$name];
+
+    "/srv/tomcat/${name}/conf/Catalina/localhost":
+      ensure  => directory,
+      require => File["/srv/tomcat/${name}/conf/Catalina"];
+
+    "/srv/tomcat/${name}/conf/Catalina/localhost/pentaho.xml":
+      ensure  => $ensure,
+      content => template('pentaho/pentaho_context.xml.erb'),
+      require => File["/srv/tomcat/${name}/conf/Catalina/localhost"];
   }
 
 }
