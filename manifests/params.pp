@@ -1,9 +1,10 @@
 class pentaho::params {
-  $pentaho_user = 'pentaho'
-  $pentaho_password = 'Lohdii4jai'
-  $hibuser_password = 'yaiqu2sohL'
 
-  $publisher_password = 'EuFu7seeki'
+  $pentaho_password = $::pentaho_pentaho_password
+  $hibuser_password = $::pentaho_hibuser_password
+  $publisher_password = $::pentaho_publisher_password
+
+  $pentaho_user = 'pentaho'
 
   $driverClassName = 'org.postgresql.Driver'
   $hibernateURL = 'jdbc:postgresql://localhost:5432/hibernate'
