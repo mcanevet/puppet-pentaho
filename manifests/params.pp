@@ -3,6 +3,8 @@ class pentaho::params {
   $pentaho_password = 'Lohdii4jai'
   $hibuser_password = 'yaiqu2sohL'
 
+  $publisher_password = 'EuFu7seeki'
+
   $driverClassName = 'org.postgresql.Driver'
   $hibernateURL = 'jdbc:postgresql://localhost:5432/hibernate'
   $hibernateDialect = 'org.hibernate.dialect.PostgreSQLDialect'

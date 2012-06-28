@@ -12,6 +12,7 @@ class pentaho::server {
   $quartzURL = $pentaho::params::quartzURL
   $quartzDelegate = $pentaho::params::quartzDelegate
   $hibernateMappingResource = $pentaho::params::hibernateMappingResource
+  $publisher_password = $pentaho::params::publisher_password
 
 
   package {'sun-java6-jre':
@@ -72,6 +73,32 @@ class pentaho::server {
   file {'/usr/share/pentaho/solutions/system/quartz/quartz.properties':
     ensure  => $ensure,
     content => template('pentaho/quartz.properties.erb'),
+  }
+
+  # Deactivate samples
+  file {'/usr/share/pentaho/solutions/system/olap/datasources.xml':
+    ensure  => present,
+    content => '<?xml version="1.0" encoding="UTF-8"?>
+<DataSources>
+  <DataSource>
+    <DataSourceName>Provider=Mondrian;DataSource=Pentaho</DataSourceName>
+    <DataSourceDescription>Pentaho BI Platform Datasources</DataSourceDescription>
+    <URL>http://localhost:8080/pentaho/Xmla?userid=joe&amp;password=password</URL>
+    <DataSourceInfo>Provider=mondrian</DataSourceInfo>
+    <ProviderName>PentahoXMLA</ProviderName>
+    <ProviderType>MDP</ProviderType>
+    <AuthenticationMode>Unauthenticated</AuthenticationMode>
+    <Catalogs>
+    </Catalogs>
+  </DataSource>
+</DataSources>
+',
+  }
+
+  # Publish password
+  file {'/usr/share/pentaho/solutions/system/publisher_config.xml':
+    ensure  => present,
+    content => template('pentaho/solutions_publisher_config.xml.erb'),
   }
 
 }
