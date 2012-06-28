@@ -48,7 +48,7 @@ define pentaho::biserver::instance ($ensure) {
     source  => 'file:///usr/share/pentaho/wars/tomcat/pentaho.war',
     owner   => 'pentaho',
     group   => 'pentaho',
-    require => Package['pentaho-biserver-wars'],
+    require => [Package['pentaho-biserver-wars'], Tomcat::Instance[$name]],
   }
 
 
@@ -57,7 +57,7 @@ define pentaho::biserver::instance ($ensure) {
     source => 'file:///usr/share/pentaho/wars/pentaho-style.war',
     owner  => 'pentaho',
     group  => 'pentaho',
-    require => Package['pentaho-biserver-wars'],
+    require => [Package['pentaho-biserver-wars'], Tomcat::Instance[$name]],
   }
 
   include pentaho::postgresql
@@ -67,6 +67,7 @@ define pentaho::biserver::instance ($ensure) {
   file {"/srv/tomcat/${name}/conf/Catalina/localhost/pentaho.xml":
     ensure  => $ensure,
     content => template('pentaho/pentaho_context.xml.erb'),
+    require => Tomcat::Instance[$name],
   }
 
 }
