@@ -21,7 +21,7 @@ class pentaho::server {
   }
 
   # biserver           => package
-  package {['pentaho-biserver-common', 'pentaho-biserver-wars', 'pentaho-biserver-plugin-saiku']:
+  package {['pentaho-biserver-common', 'pentaho-biserver-wars']:
     ensure  => installed,
     require => Apt::Sources_list['pentaho'],
   }
