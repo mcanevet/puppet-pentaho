@@ -27,12 +27,13 @@ define pentaho::biserver::instance ($ensure) {
   $pentaho_user = $pentaho::params::pentaho_user
   $pentaho_password = $pentaho::params::pentaho_password
   $hibuser_password = $pentaho::params::hibuser_password
-  $driverClassName = 'org.postgresql.Driver'
-  $hibernateURL = 'jdbc:postgresql://localhost:5432/hibernate'
-  $hibernateDialect = 'org.hibernate.dialect.PostgreSQLDialect'
-  $quartzURL = 'jdbc:postgresql://localhost:5432/quartz'
-  $quartzDelegate = 'org.quartz.impl.jdbcjobstore.PostgreSQLDelegate'
-  $hibernateMappingResource = 'hibernate/postgresql.hbm.xml'
+
+  $driverClassName = $pentaho::params::driverClassName
+  $hibernateURL = $pentaho::params::hibernateURL
+  $hibernateDialect = $pentaho::params::hibernateDialect
+  $quartzURL = $pentaho::params::quartzURL
+  $quartzDelegate = $pentaho::params::quartzDelegate
+  $hibernateMappingResource = $pentaho::params::hibernateMappingResource
 
   tomcat::instance {$name:
     ensure  => $ensure,
