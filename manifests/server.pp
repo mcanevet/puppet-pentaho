@@ -53,7 +53,6 @@ class pentaho::server {
     target => '/usr/share/java/c3p0.jar',
   }
 
-  # TODO: Use Augeas XML lens with puppet 2.X
   file {'/usr/share/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
     ensure  => $ensure,
     content => template('pentaho/solutions_db_hibernate.cfg.xml.erb'),

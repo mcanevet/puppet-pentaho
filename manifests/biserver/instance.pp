@@ -57,23 +57,9 @@ define pentaho::biserver::instance ($ensure) {
 
   # Config files
 
-  # TODO: Use Augeas XML lens with puppet 2.X
   file {"/srv/tomcat/${name}/conf/Catalina/localhost/pentaho.xml":
     ensure  => $ensure,
-    content => "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-    <Context path=\"/pentaho\" docbase=\"webapps/pentaho/\">
-    <Resource name=\"jdbc/Hibernate\" auth=\"Container\" type=\"javax.sql.DataSource\"
-    factory=\"org.apache.commons.dbcp.BasicDataSourceFactory\" maxActive=\"20\" maxIdle=\"5\"
-    maxWait=\"10000\" username=\"hibuser\" password=\"${hibuser_password}\"
-    driverClassName=\"org.postgresql.Driver\" url=\"jdbc:postgresql://localhost:5432/hibernate\"
-    validationQuery=\"select 1\" />
-
-    <Resource name=\"jdbc/Quartz\" auth=\"Container\" type=\"javax.sql.DataSource\"
-    factory=\"org.apache.commons.dbcp.BasicDataSourceFactory\" maxActive=\"20\" maxIdle=\"5\"
-    maxWait=\"10000\" username=\"${pentaho_user}\" password=\"${pentaho_password}\"
-    driverClassName=\"org.postgresql.Driver\" url=\"jdbc:postgresql://localhost:5432/quartz\"
-    validationQuery=\"select 1\"/>
-    </Context>",
+    content => template('pentaho/pentaho_context.xml.erb'),
   }
 
 }
