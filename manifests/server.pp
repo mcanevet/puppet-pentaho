@@ -21,7 +21,7 @@ class pentaho::server {
   }
 
   # biserver           => package
-  package {['pentaho-biserver-common', 'pentaho-biserver-wars']:
+  package {['pentaho-biserver-common', 'pentaho-biserver-wars', 'pentaho-biserver-solutions']:
     ensure  => installed,
     require => Apt::Sources_list['pentaho'],
   }
@@ -53,21 +53,25 @@ class pentaho::server {
   file {'/usr/share/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
     ensure  => $ensure,
     content => template('pentaho/solutions_db.hibernate.cfg.xml.erb'),
+    require => Package['pentaho-biserver-solutions'],
   }
 
   file {'/usr/share/pentaho/solutions/system/applicationContext-spring-security-hibernate.properties':
     ensure  => $ensure,
     content => template('pentaho/solutions_applicationContext-spring-security-hibernate.properties.erb'),
+    require => Package['pentaho-biserver-solutions'],
   }
 
   file {'/usr/share/pentaho/solutions/system/hibernate/hibernate-settings.xml':
     ensure => $ensure,
     source => 'file:///usr/share/pentaho/solutions/system/dialects/postgresql/hibernate/hibernate-settings.xml',
+    require => Package['pentaho-biserver-solutions'],
   }
 
   file {'/usr/share/pentaho/solutions/system/quartz/quartz.properties':
     ensure  => $ensure,
     content => template('pentaho/quartz.properties.erb'),
+    require => Package['pentaho-biserver-solutions'],
   }
 
   # Deactivate samples
@@ -88,12 +92,14 @@ class pentaho::server {
   </DataSource>
 </DataSources>
 ',
+    require => Package['pentaho-biserver-solutions'],
   }
 
   # Publish password
   file {'/usr/share/pentaho/solutions/system/publisher_config.xml':
     ensure  => present,
     content => template('pentaho/solutions_publisher_config.xml.erb'),
+    require => Package['pentaho-biserver-solutions'],
   }
 
 }
