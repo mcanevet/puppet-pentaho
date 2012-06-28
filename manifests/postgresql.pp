@@ -104,9 +104,23 @@ class pentaho::postgresql {
   }
 
   # Jars.
-  # TODO: package postgresql jdbc 4
+  package {'libpg-java-9.0':
+    ensure => present,
+  }
+
   file {'/usr/share/tomcat6/lib/postgresql.jar':
-    ensure => link,
-    target => '/usr/local/share/java/postgresql-9.0-802.jdbc4.jar',
+    ensure  => link,
+    target  => '/usr/share/java/postgresql.jar',
+    require => Package['libpg-java-9.0'],
+  }
+
+  package {'libc3p0-java':
+    ensure => present,
+  }
+
+  file {'/usr/share/tomcat6/lib/c3p0.jar':
+    ensure  => link,
+    target  => '/usr/share/java/c3p0.jar',
+    require => Package['libc3p0-java'],
   }
 }

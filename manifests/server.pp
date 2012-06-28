@@ -33,7 +33,7 @@ class pentaho::server {
   }
 
   # Java libs
-  package {['libcommons-logging-java', 'liblog4j1.2-java', 'libpg-java', 'libc3p0-java', 'libpostgresql-jdbc-java']:
+  package {['libcommons-logging-java', 'liblog4j1.2-java']:
     ensure => present,
   }
 
@@ -49,11 +49,6 @@ class pentaho::server {
     require => Package['pentaho-biserver-common'],
   }
 
-
-  file {'/usr/share/tomcat6/lib/c3p0.jar':
-    ensure => link,
-    target => '/usr/share/java/c3p0.jar',
-  }
 
   file {'/usr/share/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
     ensure  => $ensure,
