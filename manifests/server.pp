@@ -55,7 +55,7 @@ class pentaho::server {
 
   file {'/usr/share/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
     ensure  => $ensure,
-    content => template('pentaho/solutions_db_hibernate.cfg.xml.erb'),
+    content => template('pentaho/solutions_db.hibernate.cfg.xml.erb'),
   }
 
   file {'/usr/share/pentaho/solutions/system/applicationContext-spring-security-hibernate.properties':
