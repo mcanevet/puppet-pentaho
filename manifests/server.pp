@@ -50,32 +50,32 @@ class pentaho::server {
   }
 
 
-  file {'/usr/share/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
+  file {'/usr/lib/pentaho/solutions/system/hibernate/postgresql.hibernate.cfg.xml':
     ensure  => $ensure,
     content => template('pentaho/solutions_db.hibernate.cfg.xml.erb'),
     require => Package['pentaho-biserver-solutions'],
   }
 
-  file {'/usr/share/pentaho/solutions/system/applicationContext-spring-security-hibernate.properties':
+  file {'/usr/lib/pentaho/solutions/system/applicationContext-spring-security-hibernate.properties':
     ensure  => $ensure,
     content => template('pentaho/solutions_applicationContext-spring-security-hibernate.properties.erb'),
     require => Package['pentaho-biserver-solutions'],
   }
 
-  file {'/usr/share/pentaho/solutions/system/hibernate/hibernate-settings.xml':
+  file {'/usr/lib/pentaho/solutions/system/hibernate/hibernate-settings.xml':
     ensure => $ensure,
-    source => 'file:///usr/share/pentaho/solutions/system/dialects/postgresql/hibernate/hibernate-settings.xml',
+    source => 'file:///usr/lib/pentaho/solutions/system/dialects/postgresql/hibernate/hibernate-settings.xml',
     require => Package['pentaho-biserver-solutions'],
   }
 
-  file {'/usr/share/pentaho/solutions/system/quartz/quartz.properties':
+  file {'/usr/lib/pentaho/solutions/system/quartz/quartz.properties':
     ensure  => $ensure,
     content => template('pentaho/quartz.properties.erb'),
     require => Package['pentaho-biserver-solutions'],
   }
 
   # Deactivate samples
-  file {'/usr/share/pentaho/solutions/system/olap/datasources.xml':
+  file {'/usr/lib/pentaho/solutions/system/olap/datasources.xml':
     ensure  => present,
     content => '<?xml version="1.0" encoding="UTF-8"?>
 <DataSources>
@@ -92,11 +92,12 @@ class pentaho::server {
   </DataSource>
 </DataSources>
 ',
+    replace => false,
     require => Package['pentaho-biserver-solutions'],
   }
 
   # Publish password
-  file {'/usr/share/pentaho/solutions/system/publisher_config.xml':
+  file {'/usr/lib/pentaho/solutions/system/publisher_config.xml':
     ensure  => present,
     content => template('pentaho/solutions_publisher_config.xml.erb'),
     require => Package['pentaho-biserver-solutions'],
