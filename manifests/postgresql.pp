@@ -1,4 +1,6 @@
 class pentaho::postgresql {
+
+  include ::postgresql
   include pentaho::params
 
 # db settings
@@ -38,7 +40,6 @@ class pentaho::postgresql {
     database => 'hibernate',
     user     => 'all',
     method   => 'trust',
-    pgver    => '9.0',
   }
 
   postgresql::hba {'access to sampledata database hibuser':
@@ -47,7 +48,6 @@ class pentaho::postgresql {
     database => 'sampledata',
     user     => 'all',
     method   => 'trust',
-    pgver    => '9.0',
   }
 
 
@@ -57,7 +57,6 @@ class pentaho::postgresql {
     database => 'quartz',
     user     => 'all',
     method   => 'trust',
-    pgver    => '9.0',
   }
 
 # databases
