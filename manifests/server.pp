@@ -92,6 +92,8 @@ class pentaho::server {
   </DataSource>
 </DataSources>
 ',
+    owner   => 'tomcat',
+    group   => 'pentaho',
     replace => false,
     require => Package['pentaho-biserver-solutions'],
   }
