@@ -1,6 +1,6 @@
 class pentaho::postgresql {
 
-  include postgresql
+  include ::postgresql
   include pentaho::params
 
 # db settings
