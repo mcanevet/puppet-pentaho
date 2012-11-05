@@ -75,6 +75,10 @@ define pentaho::biserver::instance ($ensure) {
       ensure  => $ensure,
       content => template('pentaho/pentaho_context.xml.erb'),
       require => File["/srv/tomcat/${name}/conf/Catalina/localhost"];
+
+    "/srv/tomcat/${name}/webdetails.db":
+      ensure => directory,
+      owner  => 'tomcat';
   }
 
 }
