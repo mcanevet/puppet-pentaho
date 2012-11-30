@@ -78,7 +78,8 @@ define pentaho::biserver::instance ($ensure) {
 
     "/srv/tomcat/${name}/webdetails.db":
       ensure => directory,
-      owner  => 'tomcat';
+      owner  => 'tomcat',
+      group  => 'pentaho';
   }
 
 }
