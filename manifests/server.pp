@@ -54,24 +54,32 @@ class pentaho::server {
     ensure  => $ensure,
     content => template('pentaho/solutions_db.hibernate.cfg.xml.erb'),
     require => Package['pentaho-biserver-solutions'],
+    owner   => 'tomcat',
+    group   => 'pentaho',
   }
 
   file {'/usr/lib/pentaho/solutions/system/applicationContext-spring-security-hibernate.properties':
     ensure  => $ensure,
     content => template('pentaho/solutions_applicationContext-spring-security-hibernate.properties.erb'),
     require => Package['pentaho-biserver-solutions'],
+    owner   => 'tomcat',
+    group   => 'pentaho',
   }
 
   file {'/usr/lib/pentaho/solutions/system/hibernate/hibernate-settings.xml':
-    ensure => $ensure,
-    source => 'file:///usr/lib/pentaho/solutions/system/dialects/postgresql/hibernate/hibernate-settings.xml',
+    ensure  => $ensure,
+    source  => 'file:///usr/lib/pentaho/solutions/system/dialects/postgresql/hibernate/hibernate-settings.xml',
     require => Package['pentaho-biserver-solutions'],
+    owner   => 'tomcat',
+    group   => 'pentaho',
   }
 
   file {'/usr/lib/pentaho/solutions/system/quartz/quartz.properties':
     ensure  => $ensure,
     content => template('pentaho/quartz.properties.erb'),
     require => Package['pentaho-biserver-solutions'],
+    owner   => 'tomcat',
+    group   => 'pentaho',
   }
 
   # Deactivate samples
@@ -103,6 +111,8 @@ class pentaho::server {
     ensure  => present,
     content => template('pentaho/solutions_publisher_config.xml.erb'),
     require => Package['pentaho-biserver-solutions'],
+    owner   => 'tomcat',
+    group   => 'pentaho',
   }
 
 }
