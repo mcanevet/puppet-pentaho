@@ -3,6 +3,7 @@ class pentaho::git {
 	group {
 		"pentaho" :
 			ensure => "present",
+			system => true,
 	}
 	user {
 		"git" :
@@ -10,6 +11,7 @@ class pentaho::git {
 			comment => "Git User",
 			shell => "/bin/bash",
 			home => "/srv/git",
+			system => true,
 			require => Group[pentaho],
 	}
 	User <| title == tomcat |> {
