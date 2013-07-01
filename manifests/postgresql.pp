@@ -15,20 +15,18 @@ class pentaho::postgresql {
 
 # db users
 
-	postgresql::user {'hibuser':
-			ensure     => present,
-			password   => $hibuser_password,
-			superuser  => false,
-			createdb   => false,
-			createrole => false,
-	}
+  postgresql::database_user {'hibuser':
+    password_hash => postgresql_password('hibuser', $hibuser_password),
+    superuser     => false,
+    createdb      => false,
+    createrole    => false,
+  }
 
-  postgresql::user {$pentaho_user:
-      ensure     => present,
-      password   => $pentaho_password,
-      superuser  => false,
-      createdb   => false,
-      createrole => false,
+  postgresql::database_user {$pentaho_user:
+    password_hash => postgresql_password($pentaho_user, $pentaho_password),
+    superuser     => false,
+    createdb      => false,
+    createrole    => false,
   }
 
 # db access
@@ -89,7 +87,7 @@ class pentaho::postgresql {
     template  => 'template1',
     source    => $create_repository_sql_gz,
     overwrite => false,
-    require   => Postgresql::User['hibuser'],
+    require   => Postgresql::Database_user['hibuser'],
   }
 
   postgresql::database {'quartz':
@@ -99,7 +97,7 @@ class pentaho::postgresql {
       template  => 'template1',
       source    => $create_quartz_sql_gz,
       overwrite => false,
-      require   => Postgresql::User[$pentaho_user],
+      require   => Postgresql::Database_user[$pentaho_user],
   }
 
   # Jars.
