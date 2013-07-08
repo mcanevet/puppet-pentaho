@@ -81,7 +81,6 @@ class pentaho::postgresql {
   }
 
   postgresql::database {'hibernate':
-    ensure    => present,
     owner     => hibuser,
     encoding  => 'UTF8',
     template  => 'template1',
@@ -91,13 +90,12 @@ class pentaho::postgresql {
   }
 
   postgresql::database {'quartz':
-      ensure    => present,
-      owner     => $pentaho_user,
-      encoding  => 'UTF8',
-      template  => 'template1',
-      source    => $create_quartz_sql_gz,
-      overwrite => false,
-      require   => Postgresql::Database_user[$pentaho_user],
+    owner     => $pentaho_user,
+    encoding  => 'UTF8',
+    template  => 'template1',
+    source    => $create_quartz_sql_gz,
+    overwrite => false,
+    require   => Postgresql::Database_user[$pentaho_user],
   }
 
   # Jars.
