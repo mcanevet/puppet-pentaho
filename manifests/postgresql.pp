@@ -32,7 +32,7 @@ class pentaho::postgresql {
 # db access
 # /!\ Ordre dans pg_hba => full file?
 
-  postgresql::hba {'access to database hibuser':
+  generic-tmpl::mw::pgsql::hba {'access to database hibuser':
     ensure   => present,
     type     => 'local',
     database => 'hibernate',
@@ -40,7 +40,7 @@ class pentaho::postgresql {
     method   => 'trust',
   }
 
-  postgresql::hba {'access to sampledata database hibuser':
+  generic-tmpl::mw::pgsql::hba {'access to sampledata database hibuser':
     ensure   => present,
     type     => 'local',
     database => 'sampledata',
@@ -49,7 +49,7 @@ class pentaho::postgresql {
   }
 
 
-  postgresql::hba {'access to quartz database pentaho_user':
+  generic-tmpl::mw::pgsql::hba {'access to quartz database pentaho_user':
     ensure   => present,
     type     => 'local',
     database => 'quartz',
