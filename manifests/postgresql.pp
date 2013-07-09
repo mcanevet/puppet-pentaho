@@ -84,18 +84,22 @@ class pentaho::postgresql {
     owner     => hibuser,
     encoding  => 'UTF8',
     template  => 'template1',
-    source    => $create_repository_sql_gz,
-    overwrite => false,
     require   => Postgresql::Database_user['hibuser'],
+  }
+
+  generic-tmpl::mw::pgsql::import{'hibernate':
+    source => $create_repository_sql_gz,
   }
 
   postgresql::database {'quartz':
     owner     => $pentaho_user,
     encoding  => 'UTF8',
     template  => 'template1',
-    source    => $create_quartz_sql_gz,
-    overwrite => false,
     require   => Postgresql::Database_user[$pentaho_user],
+  }
+
+  generic-tmpl::mw::pgsql::import{'quartz':
+    source => $create_quartz_sql_gz,
   }
 
   # Jars.
